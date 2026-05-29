@@ -45,6 +45,32 @@ namespace AtelierStock
             Assert.Throws<ArgumentException>(act);
         }
 
+        [TestMethod]
+        public void Gérer_EntréeEtSortie_DeStock()
+        {
+            var p = new Produit("REF", "Nom", 10, 0);
+
+            // initial
+            Assert.AreEqual(0, p.Stocks);
+            Assert.IsTrue(p.EstEnRupture);
+
+            // rentrer du stock
+            p.Rentrer(5);
+            Assert.AreEqual(5, p.Stocks);
+            Assert.IsFalse(p.EstEnRupture);
+
+            // sortir moins que le stock
+            var sorti = p.Sortir(3);
+            Assert.AreEqual(3, sorti);
+            Assert.AreEqual(2, p.Stocks);
+
+            // sortir plus que le stock -> rupture partielle
+            sorti = p.Sortir(5);
+            Assert.AreEqual(2, sorti);
+            Assert.AreEqual(0, p.Stocks);
+            Assert.IsTrue(p.EstEnRupture);
+        }
+
 
     }
 }
