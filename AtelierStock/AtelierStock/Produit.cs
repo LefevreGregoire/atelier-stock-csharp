@@ -11,6 +11,10 @@
             ArgumentException.ThrowIfNullOrEmpty(reference, nameof(reference));
             this.reference = reference;
             this.libelle = libelle;
+
+            if (prixAchat < 0) throw new ArgumentOutOfRangeException(nameof(prixAchat), "Le prix d'achat ne peut pas être négatif.");
+            if (pourcentageMarge < 0) throw new ArgumentOutOfRangeException(nameof(pourcentageMarge), "Le pourcentage de marge ne peut pas être négatif.");
+
             this.prixAchat = prixAchat;
             this.pourcentageMarge = pourcentageMarge;
             stocks = 0;
@@ -41,10 +45,12 @@
 
         public void Rentrer(int quantite)
         {
+            if (quantite <= 0) return;
+
             stocks += quantite;
         }
 
-        public bool EstEnRupture => stocks == 0;
+        public bool EstEnRupture => stocks <= 0;
 
         #endregion
 
